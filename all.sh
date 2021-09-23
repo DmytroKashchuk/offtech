@@ -1,4 +1,13 @@
 #!/bin/sh
+
+file="NetStruct.txt"
+
+if [ -f "$file" ] ; then
+    rm "$file"
+fi
+
+/share/shared/Internetworking/showcabling Kashchuk-Iworking offtech > "NetStruct.txt"
+
 NW_route2NW_work=$(head -2 NetStruct.txt | cut -d' ' -f9)
 
 NW_work2NW_route=$(head -2 NetStruct.txt | cut -d' ' -f2)
