@@ -20,15 +20,15 @@ NW_route2IS_route=$( (head -3 NetStruct.txt | tail -n -1 )| cut -d' ' -f2)
 
 IS_route2NW_route=$( (head -3 NetStruct.txt | tail -n -1 )| cut -d' ' -f9)
 
-IS_route2SW_route=$( (head -4 NetStruct.txt | tail -n -1 )| cut -d' ' -f9)
+IS_route2SW_route=$( (head -4 NetStruct.txt | tail -n -1 )| cut -d' ' -f2)
 
-SW_route2IS_route=$( (head -4 NetStruct.txt | tail -n -1 )| cut -d' ' -f2)
+SW_route2IS_route=$( (head -4 NetStruct.txt | tail -n -1 )| cut -d' ' -f9)
 
-SW_route2SW_work=$( (head -5 NetStruct.txt | tail -n -1 )| cut -d' ' -f2)
+SW_route2SW_work=$( (head -5 NetStruct.txt | tail -n -1 )| cut -d' ' -f9)
 
-SW_work2SW_route=$( (head -5 NetStruct.txt | tail -n -1 )| cut -d' ' -f9)
+SW_work2SW_route=$( (head -5 NetStruct.txt | tail -n -1 )| cut -d' ' -f2)
 
-echo "Interface of NWrouter to NwWorkStation1:  $NW_route2NW_work"
+echo "Interface of NWrouter to NwWorkStation1: $NW_route2NW_work"
 
 echo "Interface of NwWorkStation1 to NWrouter: $NW_work2NW_route"
 
@@ -43,6 +43,11 @@ echo "SWrouter to IS router: $SW_route2IS_route"
 echo "SWrouter to SWwrokstation1: $SW_route2SW_work"
 
 echo "SWwrokstatuib1 to SWrouter: $SW_work2SW_route"
+
+#NWworkstation1 eth1 <- is "wired" to -> NWrouter eth2
+#NWrouter eth5 <- is "wired" to -> ISrouter eth0
+#ISrouter eth3 <- is "wired" to -> SWrouter eth1
+#SWworkstation1 eth3 <- is "wired" to -> SWrouter eth0
 
 ssh NWworkstation1.Kashchuk-IWorking.offtech "sudo sh ~/offtech/NWworkingstatio1.sh $NW_work2NW_route"
 
