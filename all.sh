@@ -1,62 +1,46 @@
 #!/bin/sh
 
-echo "STARTED SETUP SCRIPT"
+echo "=========== STARTED SETUP SCRIPT ==========="
 
-file="NetStruct.txt"
 
 if [ -f "$file" ] ; then
     rm "$file"
 fi
 
-/share/shared/Internetworking/showcabling Kashchuk-Iworking offtech > "NetStruct.txt"
+ExperimentName="Kashchuk-IWorking"
+
+/share/shared/Internetworking/showcabling Kashchuk-Iworking offtech > "cabling.txt"
 
 cat NetStruct.txt
 
-NW_route2NW_work=$(head -2 NetStruct.txt | cut -d' ' -f9)
+NWrouterToNWstation1=$(head -2 cabling.txt | cut -d' ' -f9)
+NWstaion1ToNwrouter=$(head -2 cabling.txt | cut -d' ' -f2)
+NWrouterToISrouter=$( (head -3 cabling.txt | tail -n -1 )| cut -d' ' -f2)
+ISrouterToNWrouter=$( (head -3 cabling.txt | tail -n -1 )| cut -d' ' -f9)
+ISrouterToSWrouter=$( (head -4 cabling.txt | tail -n -1 )| cut -d' ' -f2)
+SWrouterToISrouter=$( (head -4 cabling.txt | tail -n -1 )| cut -d' ' -f9)
+SWrouterToSWworkstation1=$( (head -5 cabling.txt | tail -n -1 )| cut -d' ' -f9)
+SWworkstation1ToSWrouter=$( (head -5 cabling.txt | tail -n -1 )| cut -d' ' -f2)
 
-NW_work2NW_route=$(head -2 NetStruct.txt | cut -d' ' -f2)
 
-NW_route2IS_route=$( (head -3 NetStruct.txt | tail -n -1 )| cut -d' ' -f2)
+echo "NWrouter to NwWorkStation1: $NWrouterToNWstation1"
+echo "NwWorkStation1 to NWrouter: $NWstaion1ToNwrouter"
+echo "NWrouter to IS router: $NWrouterToISrouter"
+echo "ISrouter to NW router: $ISrouterToNWrouter"
+echo "ISrouter to SWrouter: $ISrouterToSWrouter"
+echo "SWrouter to IS router: $SWrouterToISrouter"
+echo "SWrouter to SWwrokstation1: $SWrouterToSWworkstation1"
+echo "SWwrokstatuib1 to SWrouter: $SWworkstation1ToSWrouter"
 
-IS_route2NW_route=$( (head -3 NetStruct.txt | tail -n -1 )| cut -d' ' -f9)
 
-IS_route2SW_route=$( (head -4 NetStruct.txt | tail -n -1 )| cut -d' ' -f2)
+ssh NWworkstation1.$ExperimentName.offtech "sudo sh ~/offtech/NWworkstation1.sh $NWstaion1ToNwrouter"
 
-SW_route2IS_route=$( (head -4 NetStruct.txt | tail -n -1 )| cut -d' ' -f9)
+ssh NWrouter.$ExperimentName.offtech "sudo sh ~/offtech/NWrouter.sh $NWrouterToNWstation1 $NWrouterToISrouter"
 
-SW_route2SW_work=$( (head -5 NetStruct.txt | tail -n -1 )| cut -d' ' -f9)
+ssh ISrouter.$ExperimentName.offtech "sudo sh ~/offtech/ISrouter.sh $ISrouterToNWrouter $ISrouterToSWrouter"
 
-SW_work2SW_route=$( (head -5 NetStruct.txt | tail -n -1 )| cut -d' ' -f2)
+ssh SWrouter.$ExperimentName.offtech "sudo sh ~/offtech/SWrouter.sh $SWrouterToISrouter $SWrouterToSWworkstation1"
 
-echo "Interface of NWrouter to NwWorkStation1: $NW_route2NW_work"
-
-echo "Interface of NwWorkStation1 to NWrouter: $NW_work2NW_route"
-
-echo "Interface NWrouter to IS router: $NW_route2IS_route"
-
-echo "ISrouter to NW router: $IS_route2NW_route"
-
-echo "ISrouter to SWrouter: $IS_route2SW_route"
-
-echo "SWrouter to IS router: $SW_route2IS_route"
-
-echo "SWrouter to SWwrokstation1: $SW_route2SW_work"
-
-echo "SWwrokstatuib1 to SWrouter: $SW_work2SW_route"
-
-#NWworkstation1 eth1 <- is "wired" to -> NWrouter eth2
-#NWrouter eth5 <- is "wired" to -> ISrouter eth0
-#ISrouter eth3 <- is "wired" to -> SWrouter eth1
-#SWworkstation1 eth3 <- is "wired" to -> SWrouter eth0
-
-ssh NWworkstation1.Kashchuk-IWorking.offtech "sudo sh ~/offtech/NWworkingstatio1.sh $NW_work2NW_route"
-
-ssh NWrouter.Kashchuk-IWorking.offtech "sudo sh ~/offtech/NWrouter.sh $NW_route2NW_work $NW_route2IS_route"
-
-ssh ISrouter.Kashchuk-IWorking.offtech "sudo sh ~/offtech/ISrouter.sh $IS_route2NW_route $IS_route2SW_route"
-
-ssh SWrouter.Kashchuk-IWorking.offtech "sudo sh ~/offtech/SWrouter.sh $SW_route2IS_route $SW_route2SW_work"
-
-ssh SWworkstation1.Kashchuk-IWorking.offtech "sudo sh ~/offtech/SWworkstation1.sh $SW_work2SW_route"
+ssh SWworkstation1.$ExperimentName.offtech "sudo sh ~/offtech/SWworkstation1.sh $SWworkstation1ToSWrouter"
 
 
