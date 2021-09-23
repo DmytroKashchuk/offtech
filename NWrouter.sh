@@ -12,6 +12,9 @@ route add -net 10.0.0.0 netmask 255.255.255.248 gw 2.4.6.9
 
 echo "set routes router 1"
 
+echo "configuring NAT"
+iptables -t nat -A POSTROUTING -o $2 -s 172.16.16.0/29 -j SNAT --to 2.4.6.10
+
 echo "configured NWrouter routes"
 
 exit
