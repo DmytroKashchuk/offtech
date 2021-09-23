@@ -31,14 +31,14 @@ echo $SW_route2SW_work
 
 echo $SW_work2SW_route
 
-ssh SWworkstation1.Kashchuk-IWorking.offtech "sudo sh NWworkingstatio1.sh $NW_work2NW_route"
+ssh SWworkstation1.Kashchuk-IWorking.offtech "sudo sh ~/offtech/NWworkingstatio1.sh $NW_work2NW_route"
 
-ssh NWrouter.Kashchuk-IWorking.offtech "sudo sh NWrouter.sh $NW_route2NW_work $NW_route2IS_route"
+ssh NWrouter.Kashchuk-IWorking.offtech "sudo sh ~/offtech/NWrouter.sh $NW_route2NW_work $NW_route2IS_route"
 
-ssh NWrouter.Kashchuk-IWorking.offtech "sudo sh ISrouter.sh $IS_route2NW_route $IS_route2SW_route"
+ssh NWrouter.Kashchuk-IWorking.offtech "sudo sh ~/offtech/ISrouter.sh $IS_route2NW_route $IS_route2SW_route"
 
-ssh NWrouter.Kashchuk-IWorking.offtech "sudo sh SWrouter.sh $SW_route2IS_route $SW_route2SW_work"
+ssh NWrouter.Kashchuk-IWorking.offtech "sudo sh ~/offtech/SWrouter.sh $SW_route2IS_route $SW_route2SW_work"
 
-ssh NWrouter.Kashchuk-IWorking.offtech "sudo sh SWworkstation1.sh $SW_work2SW_route"
+ssh NWrouter.Kashchuk-IWorking.offtech "sudo sh ~/offtech/SWworkstation1.sh $SW_work2SW_route"
 
 
