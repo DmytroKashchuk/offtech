@@ -10,16 +10,20 @@ fi
 ExperimentName="Kashchuk-IWorking"
 
 /share/shared/Internetworking/showcabling Kashchuk-Iworking offtech > "cabling.txt"
+cat cabling.txt
 
-cat NetStruct.txt
-
-NWrouterToNWstation1=$(head -2 cabling.txt | cut -d' ' -f9)
+#NWworkstation1
 NWstaion1ToNwrouter=$(head -2 cabling.txt | cut -d' ' -f2)
+#NWrouter
+NWrouterToNWstation1=$(head -2 cabling.txt | cut -d' ' -f9)
 NWrouterToISrouter=$( (head -3 cabling.txt | tail -n -1 )| cut -d' ' -f2)
+#ISrouter
 ISrouterToNWrouter=$( (head -3 cabling.txt | tail -n -1 )| cut -d' ' -f9)
 ISrouterToSWrouter=$( (head -4 cabling.txt | tail -n -1 )| cut -d' ' -f2)
+#SWrouter
 SWrouterToISrouter=$( (head -4 cabling.txt | tail -n -1 )| cut -d' ' -f9)
 SWrouterToSWworkstation1=$( (head -5 cabling.txt | tail -n -1 )| cut -d' ' -f9)
+#NWworkstation1
 SWworkstation1ToSWrouter=$( (head -5 cabling.txt | tail -n -1 )| cut -d' ' -f2)
 
 
